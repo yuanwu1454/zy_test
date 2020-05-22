@@ -182,6 +182,7 @@ function test:onKeyPressed(code, event)
         -- self:testCreateRoom()
     elseif (cc.KeyCode.KEY_A == code) then --房间一键准备
         -- self:testPrepare()
+        self:testFunc()
     elseif (cc.KeyCode.KEY_R == code) then --一键注册
         -- self:autoRegister()
     elseif (cc.KeyCode.KEY_O == code) then --清空资源
@@ -753,9 +754,10 @@ function test:check2Signs(content)
 end
 
 function test:testFunc( ... )
-    -- self:testIrregularShapeClickEvent()
+	loadTexture("baccarat_road.plist", "baccarat_road.png")
+    self:testIrregularShapeClickEvent()
     -- print("zxvczxcvasdf")
-    print(json.encode(g.vars.user))
+    -- print(json.encode(g.vars.user))
 end
 
 function test:testFormatBigInt()
@@ -962,16 +964,17 @@ function test:testLastFunc()
 
     if LastTbl and LastTbl[1] then
         local j, i, txt, func, bNotClose = unpack(LastTbl[1])
-        if func then
-            print("func >>>>>", func)
-            func(layout)
-        end
+        --先消除
         if not bNotClose then
             local del = cc.Director:getInstance():getRunningScene()
             local codeLayer = del:getChildByName("GLLayer")
             if codeLayer and tolua.isnull(codeLayer) == false then
                 codeLayer:removeFromParent()
             end
+        end
+        if func then
+            print("func >>>>>", func)
+            func(layout)
         end
     end
 end
@@ -1194,16 +1197,20 @@ function test:testBaccaratGameTestFunc()
             -- 游戏开始
             -- self:testBaccaratGameStart(tableUIManager)
             -- print(tableUIManager.nodes.operateNode:isVisible())
-            self:testBaccaratDealCard(tableUIManager)
-            scene:performWithDelay(function() 
-                tableUIManager._cardRegions[1]:turnOverOnePoker(56, 1)
-                tableUIManager._cardRegions[1]:turnOverOnePoker(55, 2)
-                tableUIManager._cardRegions[2]:turnOverOnePoker(52, 1)
-                tableUIManager._cardRegions[2]:turnOverOnePoker(44, 2)
-            end, 3)
-            scene:performWithDelay(function() 
-                self:testBaccaratDealCard2(tableUIManager)
-            end, 5)
+            -- self:testBaccaratDealCard(tableUIManager)
+            -- scene:performWithDelay(function() 
+            --     tableUIManager._cardRegions[1]:turnOverOnePoker(56, 1)
+            --     tableUIManager._cardRegions[1]:turnOverOnePoker(55, 2)
+            --     tableUIManager._cardRegions[2]:turnOverOnePoker(52, 1)
+            --     tableUIManager._cardRegions[2]:turnOverOnePoker(44, 2)
+            -- end, 3)
+            -- scene:performWithDelay(function() 
+            --     self:testBaccaratDealCard2(tableUIManager)
+            -- end, 5)
+
+            --显示咪牌玩家头上的扑克
+            -- self:testBaccaratMiCard()
+            tableUIManager:test()
         end
 	end, 0.7)
     
@@ -1274,7 +1281,8 @@ end
 
 function test:testIrregularShapeClickEvent()
     local testClick = require2("src.test.testClick")
-    testClick:testIrregularShapeClickEvent()
+    -- testClick:testIrregularShapeClickEvent()
+    testClick:testCircle()
 end
 
 function test:reloadBaccaratGame()
@@ -1291,4 +1299,15 @@ function test:loadUserData()
         -- local str = '{"loginKey":"b1ed8d80abc9bdbc61ab03cdda7ae4fc9348809c","newUser":0,"clientGuidingStep":0,"molSmsSwitch":1,"vpLevel":0,"localLogSwitch":0,"showWaterFestival":0,"guidePackageSwitch":0,"safeBoxChips":0,"flashSaleVersion":"","lotteryTimedSwitch":0,"enableMagic":1,"mttSwitch":0,"packageName":"com.flounder.nineke","lobbyBg":"","sumPaySwitch":0,"firstPayStageSwitch":1,"guideCodeLastTime":361030,"verName":"2.0.7.2","magicList":[{"magicId":1,"type":1,"order":"100","deltaLike":"2"},{"magicId":8,"type":1,"order":"105","deltaLike":"2"},{"magicId":3,"type":1,"order":"110","deltaLike":"-2"},{"magicId":13,"type":1,"order":"112","deltaLike":"2"},{"magicId":5,"type":1,"order":"113","deltaLike":"2"},{"magicId":11,"type":1,"order":"114","deltaLike":"-2"},{"magicId":12,"type":1,"order":"140","deltaLike":"-2"},{"magicId":4,"type":1,"order":"141","deltaLike":"-2"},{"magicId":19,"type":1,"order":"148","deltaLike":-2},{"magicId":20,"type":1,"order":"150","deltaLike":-2},{"magicId":16,"type":1,"order":"160","deltaLike":"-2"},{"magicId":10,"type":1,"order":"170","deltaLike":"-2"},{"magicId":101,"type":2,"order":10101,"deltaLike":0},{"magicId":102,"type":2,"order":10102,"deltaLike":0}],"baccaratSwitch":1,"novicePack":{"data":[{"status":1,"reward":"{\"chips\":10000,\"exp\":10}"},{"status":1,"reward":"{\"chips\":20000,\"magic\":10}"},{"status":0,"reward":"{\"chips\":30000,\"gem\":2}"}]},"rechargePacksInfo":{"enableJoin":1,"enablePop":0,"paymentId":2001,"channel":"BluePay","switch":"1","currency":"THB","chips":3000000,"name":"3M???","price":"5000"},"verCode":"217","name":"8531155","loginType":"device","giftId":"0","canGuideList":{"three":0,"texas":0,"two":0},"settingInfo":{"musicVolume":"70","version":"2.0.7.2","new":1,"soundVolume":"70","autoSeat":1,"url":"https:\/\/play.google.com\/store\/apps\/details?id=com.joyours.thai_nineke","track":1,"blindSound":1,"music":1,"slotsSound":"1","sound":1,"autoBuy":1,"name":"8531155","shake":1},"uid":8531155,"hasGuideReward":1,"cdn":"http:\/\/ninekecdn.th.joyours.com","ret":0,"like":"0","avatarFrame":0,"isChangeHeadPicPermited":true,"cocktailResources":{},"luckyOnePaySwitch":1,"pointExchangeRoot":"https:\/\/dbpri0d8pp767.cloudfront.net\/point_exchange\/dist\/index.html","wsproxy":[{"ip":"wss:\/\/httpsproxy.th.joyours.com\/fbninekesvrgame\/","port":443},{"ip":"wss:\/\/httpsproxy.th.joyours.com\/fbninekesvrgame\/","port":443}],"switchSongkran":0,"chatBubble":0,"enableLocalPay":0,"printSwitch":0,"minBetLimit":{"20000000":"1000","5000000":"200"},"hundredEnable":"1","LvlExpDic":[{"needExperience":15,"chips":0,"experience":0,"magic":0},{"needExperience":30,"chips":10000,"experience":15,"magic":0},{"needExperience":120,"chips":10000,"experience":45,"magic":0},{"needExperience":360,"chips":15000,"experience":165,"magic":0},{"needExperience":720,"chips":20000,"experience":525,"magic":10},{"needExperience":1200,"chips":30000,"experience":1245,"magic":0},{"needExperience":1300,"chips":30000,"experience":2445,"magic":0},{"needExperience":1500,"chips":30000,"experience":3745,"magic":10},{"needExperience":2000,"chips":30000,"experience":5245,"magic":0},{"needExperience":2500,"chips":50000,"experience":7245,"magic":10},{"needExperience":3000,"chips":50000,"experience":9745,"magic":0},{"needExperience":3500,"chips":50000,"experience":12745,"magic":0},{"needExperience":4000,"chips":50000,"experience":16245,"magic":0},{"needExperience":4500,"chips":50000,"experience":20245,"magic":0},{"needExperience":4800,"chips":50000,"experience":24745,"magic":15},{"needExperience":5000,"chips":50000,"experience":29545,"magic":0},{"needExperience":5200,"chips":50000,"experience":34545,"magic":0},{"needExperience":5300,"chips":50000,"experience":39745,"magic":0},{"needExperience":6000,"chips":50000,"experience":45045,"magic":0},{"needExperience":6500,"chips":80000,"experience":51045,"magic":20},{"needExperience":7000,"chips":80000,"experience":57545,"magic":0},{"needExperience":7500,"chips":80000,"experience":64545,"magic":0},{"needExperience":8000,"chips":80000,"experience":72045,"magic":0},{"needExperience":9000,"chips":80000,"experience":80045,"magic":0},{"needExperience":10000,"chips":80000,"experience":89045,"magic":25},{"needExperience":11000,"chips":80000,"experience":99045,"magic":0},{"needExperience":12000,"chips":80000,"experience":110045,"magic":0},{"needExperience":13000,"chips":80000,"experience":122045,"magic":0},{"needExperience":14000,"chips":80000,"experience":135045,"magic":0},{"needExperience":15000,"chips":100000,"experience":149045,"magic":30},{"needExperience":16000,"chips":100000,"experience":164045,"magic":0},{"needExperience":17000,"chips":100000,"experience":180045,"magic":0},{"needExperience":18000,"chips":100000,"experience":197045,"magic":0},{"needExperience":19000,"chips":100000,"experience":215045,"magic":0},{"needExperience":20000,"chips":100000,"experience":234045,"magic":30},{"needExperience":21000,"chips":200000,"experience":254045,"magic":0},{"needExperience":22000,"chips":200000,"experience":275045,"magic":0},{"needExperience":23000,"chips":200000,"experience":297045,"magic":0},{"needExperience":24000,"chips":200000,"experience":320045,"magic":0},{"needExperience":30000,"chips":200000,"experience":344045,"magic":30},{"needExperience":35000,"chips":300000,"experience":374045,"magic":0},{"needExperience":40000,"chips":300000,"experience":409045,"magic":0},{"needExperience":45000,"chips":300000,"experience":449045,"magic":0},{"needExperience":50000,"chips":300000,"experience":494045,"magic":0},{"needExperience":51000,"chips":300000,"experience":544045,"magic":40},{"needExperience":52000,"chips":400000,"experience":595045,"magic":0},{"needExperience":53000,"chips":400000,"experience":647045,"magic":0},{"needExperience":54000,"chips":400000,"experience":700045,"magic":0},{"needExperience":55000,"chips":400000,"experience":754045,"magic":0},{"needExperience":0,"chips":1000000,"experience":809045,"magic":50}],"treasureBox":{"timeRewardCountDown":0,"timeRewardRedDot":1,"ret":0,"redDot":0,"remain":-1,"taskDailyRedDot":0},"puzzleVersion":"","acceptable":1,"mPic":"","webViewMoveSwitch":1,"accelerator":[{"ip":"47.52.73.252","port":843},{"ip":"47.254.232.254","port":843},{"ip":"47.91.43.177","port":843},{"ip":"149.129.246.22","port":843}],"continueSignIn":{"totalDays":1,"curDay":2,"prizeInfo":[{"status":2,"reward":{"chips":5000}},{"status":1,"reward":{"chips":6000}},{"status":0,"reward":{"chips":7000}},{"status":0,"reward":{"chips":8000}},{"status":0,"reward":{"chips":10000}},{"status":0,"reward":{"chips":12000}},{"status":0,"reward":{"chips":15000}}],"fbMore":30,"advertise":{"status":1,"prize":"{\"chips\":5000}"},"contPrize":{"status":0,"reward":{"chips":10000}},"getStat":1,"type":"week","contDay":7,"svipMore":0},"molSwitch":1,"giftFile":"\/giftProp\/cache\/1b8cfe4f3d89efa86124092155151b91.js","game":[{"ip":"10.201.0.47","port":"7003"},{"ip":"10.201.0.47","port":"7004"}],"ple":0,"latestVer":"218","paymentJson":"\/item\/payments-7a842de2b0028a1e76b987cd3fb55cb7d097d06b.js","isNoviceActivity":0,"displayBroadcastNums":15,"cornucopia":[13,14,19,20,25,26,27,28,29,30,31,32,49,50,55,56,61,62,63,64,65,66,67,68,79,80,81,82,83,84],"songkranPointSwitch":0,"hasGuideRewardList":{"three":1,"texas":1,"two":1},"guideReward":"{\"chips\":10000}","redDot":{"boxEntr":0,"taskAchieve":{"weekly":0,"daily":0,"achieve":0},"mail":{"friend":0,"system":1},"activityCenter":1,"guidePackage":0,"inviteCode":0,"rouletteTwo":1,"feedback":0,"puzzleFragmentFromFriend":0,"waterFestival":0,"roulette":1,"guideCode":0,"newFeedback":0},"weekCardGetToday":0,"cdnUpload":"http:\/\/ninekeupload.joyours.com","bankruptGiftPackInfo":0,"os":"android","blueAwardRequestMachine":"http:\/\/ninekeupload.joyours.com","flashSaleSwitch":0,"storageSwitchArray":{},"weekCardSwitch":0,"clientNetworkCardSwitch":0,"raceShareBasePic":{"sng":["\/sng_share_base_1.jpg","\/sng_share_base_2.jpg","\/sng_share_base_3.jpg","\/sng_share_base_4.jpg"],"mtt":["\/mtt_share_base_1.jpg","\/mtt_share_base_2.jpg","\/mtt_share_base_3.jpg","\/mtt_share_base_4.jpg"]},"switchUserVp":1,"weekCardOpenDay":0,"loginTimeStamp":1589939761,"christmasSwitch":0,"signIn":{"4":{"status":"2","awardDaily":"{\"chips\":6000}"},"1":{"status":"0","awardDaily":"{\"chips\":3000}"},"5":{"status":"2","awardDaily":"{\"chips\":8000}"},"totalRewardList":{"7":"{\"chips\":20000}","3":"{\"chips\":10000}","5":"{\"chips\":15000}"},"6":{"status":"2","awardDaily":"{\"chips\":10000}"},"3":{"status":"2","awardDaily":"{\"chips\":5000}"},"7":{"status":"2","awardDaily":"{\"chips\":12000}"},"2":{"status":"0","awardDaily":"{\"chips\":4000}"},"totalDays":2},"fbMore":"30","mysteryPackageSwitch":0,"activityCocktailExchangeSwitch":0,"forceUpdateStore":"","debugLogBeforeDays":"2","magicSort":[1,8,3,13,5,11,12,4,19,20,16,10,101,102],"isInReview":0,"sPic":"","privateVipLimit":"1","broadcast":{"ip":"10.201.0.11","port":7013},"magicLimit":6,"switchPointExchangeVer2":1,"rii":0,"bPic":"","smartHelperEnable":1,"switchFragmentCollect":0,"switchTimeReward":1,"forceHotfix":"","mailCount":1,"exp":2,"cornucopiaSwitch":1,"festivalSwitch":0,"isExpire":0,"proxy":[{"ip":"150.109.183.226","port":843},{"ip":"150.109.183.226","port":443},{"ip":"150.109.179.223","port":843},{"ip":"150.109.179.200","port":843},{"ip":"150.109.179.200","port":443},{"ip":"150.109.179.223","port":443}],"isShow":"1","canGuide":0,"gameElite":{"minBet":10000,"svr":[{"ip":"10.201.0.47","port":"7004"}]},"magic":"0","firstChargeSwitch":0,"realRaceSwitch":0,"enableChat":"1","levelOpen":{},"gameSvr":{"blind":[{"ip":"10.201.0.47","port":"7401"}],"nineke":[{"ip":"10.201.0.47","port":"7003"},{"ip":"10.201.0.47","port":"7004"}],"pokdeng":[{"ip":"10.201.0.47","port":"7021"}],"hundred":[{"ip":"10.201.0.47","port":"7351"}]},"showPointActivity":0,"activityWaterLightCollectExchangeSwitch":0,"isPayDoubleConfirm":1,"pointVersion":"","chips":3950,"flashSaleVersionMd5":{"plistMd5":"","pngMd5":""},"raceSharePath":"\/images\/com.flounder.nineke","rechargeSwitch":0,"gem":"0","sumPayRedDot":0,"gender":"f","magicOrder":[1,8,3,5,4,10,6,7,2,9],"fb":{"pullLimit":"100","inviteLimit":"30","againTime":1589734800,"inviteSend":"600","inviteAccept":"50000"},"svipGiftList":{"4":1086,"8":1090,"1":1083,"5":1087,"9":1091,"6":1088,"3":1085,"7":1089,"2":1084},"speaker":"0","showPointActivityPrimary":0,"isNewUser":false,"activityIconSort":["songkranPoint","recharge","flashSale","luckyPay","bankrupt","pointsRedeem","rechargeTotal","secretShop","weekCard","cocktail"],"vipGiftList":{"gem":1128,"silver":1109,"gold":1110},"inviteStrangerStatus":{"status":1,"redDot":false},"discount":{"more":"12","firstPay":"100"},"chatLimit":5,"storageSwitchs":0}'
         -- g.vars.user = json.decode(str)
     end
+end
+
+function test:getDrawNodeDot(point)
+    local drawNode = cc.DrawNode:create();
+    drawNode:setPosition(cc.p(0,0))
+    drawNode:setAnchorPoint(0,0)
+    if point then
+        drawNode:drawDot(point, 20,  cc.c4f(0,0,1,1))
+    end
+
+    return drawNode
 end

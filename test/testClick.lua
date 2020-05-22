@@ -112,4 +112,66 @@ function M:testIrregularShapeClickEvent()
     end
 end
 
+function checkPointInCircle(p1, p2, r)
+    local length = cc.pGetDistance(p1, p2)
+    -- print(length)
+    return length <= r
+end
+
+-- 判断tarPos 筹码被盖住了
+function checkInCover(tarPos, posTbl, r)
+    local xTbl = {tarPos.x + r, tarPos.x + r/2, tarPos.x , tarPos.x- r/2, tarPos.x - r}
+    local yTbl = {tarPos.y + r, tarPos.y + r/2, tarPos.y , tarPos.y- r/2, tarPos.y + r}
+    local pTbl = {}
+    for i, v1 in ipairs(xTbl) do
+        for j, v2 in ipairs(yTbl) do
+            pTbl[#pTbl + 1] = cc.p(v1, v2)
+        end
+    end
+    local cnt = 0
+    for i, v in ipairs(pTbl) do
+        for _, v2 in ipairs(posTbl) do
+            if checkPointInCircle(v, v2, r) then
+                print(v.x, v.y, "in circle", v2.x, v2.y)
+                cnt = cnt + 1
+                break
+            end
+        end
+    end
+end
+
+-- 得到tarPos 半径2r范围内 所有的 位置
+function getPosTblInPosArea(tarPos, posTbl, r)
+    local retTbl = {}
+    for _, v2 in ipairs(posTbl) do
+        if checkPointInCircle(tarPos, v2, 2*r) then
+            retTbl[#retTbl + 1] = v2
+        end
+    end
+    return retTbl
+end
+
+function M:testCircle()   
+    local layer = test:createGLtestLayer()
+    -- local sprName = "#baccarat_road_small_road_bg.png"
+	-- local bg = display.newScale9Sprite(sprName, display.width/2, display.height/2, cc.size(100,100))
+    --     :addTo(layer):setColor(cc.c3b(255,0,0))
+    -- --颜色必须用浮点型来使用 不然没有效果
+    local drawNode = cc.DrawNode:create();
+    drawNode:setPosition(cc.p(0,0))
+    drawNode:setAnchorPoint(0,0)
+    layer:addChild(drawNode)
+    local r = 20
+    local targetPos = cc.p(100,100)
+    drawNode:drawDot(targetPos, r,  cc.c4f(0,0,1,1))
+    local posTbl = {}
+    for i = 1, 200 do
+        local p1 = math.random() * display.width/2
+        local p2 = math.random() * display.height/2
+        posTbl[#posTbl + 1] = cc.p(p1,p2)
+        drawNode:drawDot(posTbl[#posTbl], r,  cc.c4f(1,0,1,1))
+    end
+    checkInCover(targetPos, posTbl, r)
+end
+
 return M
